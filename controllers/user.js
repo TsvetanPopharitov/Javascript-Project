@@ -1,6 +1,7 @@
 const User = require('mongoose').model('User');
+const Role = require('mongoose').model('Role');
 const encryption = require('./../utilities/encryption');
-const Role=require('mongoose').model('Role');
+
 module.exports = {
     registerGet: (req, res) => {
         res.render('user/register');
@@ -37,13 +38,7 @@ module.exports = {
 
                     userObject.roles = roles;
                     User.create(userObject).then(user => {
-                        role.users.push(user);
-                        role.save(err => {
-                            if(err) {
-                                registerArgs.error = err.message;
-                                res.render('user/register', registerArgs);
-                            }
-                            else {
+                       user.prepareInsert();
                                 req.logIn(user, (err) => {
                                     if (err) {
                                         registerArgs.error = err.message;
@@ -53,10 +48,8 @@ module.exports = {
 
                                     res.redirect('/');
                                 })
-                            }
                         });
                     });
-                });
             }
         })
     },
@@ -77,15 +70,16 @@ module.exports = {
 
             req.logIn(user, (err) => {
                 if (err) {
-                    console.log(err);
-                    res.redirect('/user/login', {error: err.message});
+                    res.render('/user/login', {error: err.message});
                     return;
                 }
-                let returnUrl='/';
-                if  (req.session.returnUrl){
-                    returnUrl=req.session.returnUrl;
+
+                let returnUrl = '/';
+                if(req.session.returnUrl) {
+                    returnUrl = req.session.returnUrl;
                     delete req.session.returnUrl;
                 }
+
                 res.redirect(returnUrl);
             })
         })
@@ -96,6 +90,6 @@ module.exports = {
         res.redirect('/');
     },
     detailsGet:(req,res) => {
-       res.render('user/details');
-    }
+        res.render('user/details');
+    },
 };
