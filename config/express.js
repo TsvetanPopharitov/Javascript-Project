@@ -16,6 +16,7 @@ module.exports = (app, config) => {
 
     // We will use cookies.
     app.use(cookieParser());
+
     // Session is storage for cookies, which will be de/encrypted with that 'secret' key.
     app.use(session({secret: 's3cr3t5tr1ng', resave: false, saveUninitialized: false}));
 
@@ -26,14 +27,15 @@ module.exports = (app, config) => {
     app.use((req, res, next) => {
         if(req.user){
             res.locals.user = req.user;
+            req.user.isInRole('Admin').then(isAdmin=>{
+                res.locals.isAdmin=isAdmin;
+                next();
+            })
+        } else {
+            next();
         }
-
-        next();
     });
 
     // This makes the content in the "public" folder accessible for every user.
     app.use(express.static(path.join(config.rootFolder, 'public')));
 };
-
-
-
