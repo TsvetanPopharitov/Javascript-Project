@@ -65,7 +65,7 @@ articleSchema.method({
         this.tags.remove(tagId);
         this.save();
     },
-    
+
 });
 const Article = mongoose.model('Article', articleSchema);
 

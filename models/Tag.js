@@ -4,7 +4,7 @@ let tagSchema=mongoose.Schema({
     articles:[{type: mongoose.Schema.Types.ObjectId, ref: 'Article'}]
 });
 
-tagsSchema.method({
+tagSchema.method({
     prepareInsert:function(){
         let Article=mongoose.model('Article');
         for(let article of this.articles){
@@ -24,6 +24,28 @@ tagsSchema.method({
 
 });
 
-tagsSchema.set('versionKey', false);
+tagSchema.set('versionKey', false);
 const Tag=mongoose.model('Tag', tagSchema);
 module.exports=Tag;
+module.exports.initializeTags=function (newTags, articleId) {
+    for(let newTag of newTags){
+        if(newTag){
+            Tag.findOne({name: newTag}).then(tag=>{
+                if(tag){
+                    if(tag.articles.indexOf(articleId)=== -1){
+                        tag.articles.push(articleId);
+                        tag.prepareInsert();
+                        tag.save();
+                    }
+                } else{
+                    Tag.create({name: newTag}).then(tag=>{
+                        tag.articles.push(articleId);
+                        tag.prepareInsert();
+                        tag.save();
+                    })
+                }
+            });
+        }
+    }
+
+};
