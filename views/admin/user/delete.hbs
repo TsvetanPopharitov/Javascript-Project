@@ -2,18 +2,18 @@
     <div class="well">
         <form class="form-horizontal" action="/admin/user/delete/{{userToDelete.id}}" method="post">
             <fieldset>
-                <legend>Delete User - {{ userToDelete.fullName }}</legend>
-                <div class="form-group"><label class="col-sm-4 control-label" for="email">Email</label>
+                <legend>Изтриване на потребител - {{ userToDelete.fullName }}</legend>
+                <div class="form-group"><label class="col-sm-4 control-label" for="email">Имейл</label>
                     <div class="col-sm-4 "><input class="form-control" id="email" value="{{ userToDelete.email }}"
                                                   name="email" required type="text" disabled></div>
                 </div>
-                <div class="form-group"><label class="col-sm-4 control-label" for="fullName">Full Name</label>
+                <div class="form-group"><label class="col-sm-4 control-label" for="fullName">Имена</label>
                     <div class="col-sm-4 "><input type="text" class="form-control" id="fullName"
                                                   value="{{ userToDelete.fullName }}" name="fullName" disabled></div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-4 col-sm-offset-4"><a class="btn btn-default" href="/admin/user">Cancel</a>
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                    <div class="col-sm-4 col-sm-offset-4"><a class="btn btn-default" href="/admin/user/all">Отказ</a>
+                        <button type="submit" class="btn btn-danger">Изтрий</button>
                     </div>
                 </div>
             </fieldset>

@@ -42,7 +42,7 @@ module.exports.initializeTags=function (newTags, articleId) {
                         tag.articles.push(articleId);
                         tag.prepareInsert();
                         tag.save();
-                    });
+                    })
                 }
             });
         }
